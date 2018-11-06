@@ -42,8 +42,8 @@ namespace SharpEventGridServer {
                 return true;
             }
             var value = _options.ValidationValue;
-            if (context.Request.Query.ContainsKey(key) &&
-                context.Request.Query[key] == value) {
+            if (context.Request.Headers.ContainsKey(key) &&
+                context.Request.Headers[key] == value) {
                 return true;
             }
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
@@ -67,7 +67,7 @@ namespace SharpEventGridServer {
                 var handler = _options.ResolveHandler(item);
                 await handler.ProcessEvent(item);
             }
-            context.Response.StatusCode = StatusCodes.Status204NoContent;
+            context.Response.StatusCode = StatusCodes.Status202Accepted;
         }
 
         private void ValidateSubscription(HttpContext context, Event item) {
